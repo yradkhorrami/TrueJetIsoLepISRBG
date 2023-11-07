@@ -37,7 +37,8 @@ class TrueJetIsoLepISRBG : public Processor , public TrueJet_Parser
 		TrueJetIsoLepISRBG& operator=(const TrueJetIsoLepISRBG&) = delete;
 
 		typedef std::vector<EVENT::MCParticle*>				mcpVector;
-		typedef std::vector<EVENT::ReconstructedParticle*>	pfoVector;
+		typedef std::vector<EVENT::ReconstructedParticle*>		pfoVector;
+		typedef std::vector<ReconstructedParticleImpl*>			newPfoVector;
 
 		virtual void init();
 		virtual void processRunHeader();
@@ -54,15 +55,20 @@ class TrueJetIsoLepISRBG : public Processor , public TrueJet_Parser
 	private:
 
 		std::string				m_inputPFOCollection{};
+		std::string				m_inputIsoLepCollection{};
 		std::string				m_outputIsolatedLeptonCollection{};
-		std::string				m_outputISRCollection{};
+		std::string				m_outputTrueISRCollection{};
+		std::string				m_outputRecoISRCollection{};
 		std::string				m_outputPFOCollection{};
 		std::string				m_outputBackgroundCollection{};
 		std::string				_MCParticleColllectionName{};
 		std::string				_recoParticleCollectionName{};
 		std::string				_recoMCTruthLink{};
 		std::string				_MCTruthRecoLink{};
-		bool					m_rejectBackground = true;
+		bool					m_cheatIsoLepton = true;
+		bool					m_cheatIsoLeptonFSR = true;
+		bool					m_cheatISR = true;
+		bool					m_cheatOverlay = true;
 
 };
 
