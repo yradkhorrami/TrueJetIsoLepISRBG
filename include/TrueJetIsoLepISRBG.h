@@ -57,6 +57,8 @@ class TrueJetIsoLepISRBG : public Processor , public TrueJet_Parser
 		std::string				m_inputPFOCollection{};
 		std::string				m_inputIsoLepCollection{};
 		std::string				m_outputIsolatedLeptonCollection{};
+		std::string				m_outputTrueIsolatedLeptonCollection{};
+		std::string				m_outputTrueQuarkCollection{};
 		std::string				m_outputTrueISRCollection{};
 		std::string				m_outputRecoISRCollection{};
 		std::string				m_outputPFOCollection{};
