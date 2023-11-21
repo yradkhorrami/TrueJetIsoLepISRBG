@@ -14,91 +14,98 @@ TrueJetIsoLepISRBG::TrueJetIsoLepISRBG() : Processor("TrueJetIsoLepISRBG")
 	// Inputs: MC-particles, Reco-particles, the link between the two
 
 	registerInputCollection( 	LCIO::RECONSTRUCTEDPARTICLE,
-								"inputPFOCollection" ,
-								"Name of the input PFO collection"  ,
-								m_inputPFOCollection ,
-								std::string("PandoraPFOs")
-							);
+					"inputPFOCollection" ,
+					"Name of the input PFO collection"  ,
+					m_inputPFOCollection ,
+					std::string("PandoraPFOs")
+				);
 
 	registerInputCollection( 	LCIO::RECONSTRUCTEDPARTICLE,
-								"inputIsoLepCollection" ,
-								"Name of the input Isolated Leptons collection"  ,
-								m_inputIsoLepCollection ,
-								std::string("ISOLeptons")
-							);
+					"inputIsoLepCollection" ,
+					"Name of the input Isolated Leptons collection"  ,
+					m_inputIsoLepCollection ,
+					std::string("ISOLeptons")
+				);
 
 	registerOutputCollection( 	LCIO::RECONSTRUCTEDPARTICLE,
-								"outputIsolatedLeptonCollection" ,
-								"Name of the output Isolated Lepton collection"  ,
-								m_outputIsolatedLeptonCollection ,
-								std::string("trueIsolatedLeptons")
-							);
+					"outputJetCollection" ,
+					"Name of the output Jet collection"  ,
+					m_outputJetCollection ,
+					std::string("trueJetCollection")
+				);
+
+	registerOutputCollection( 	LCIO::RECONSTRUCTEDPARTICLE,
+					"outputIsolatedLeptonCollection" ,
+					"Name of the output Isolated Lepton collection"  ,
+					m_outputIsolatedLeptonCollection ,
+					std::string("trueIsolatedLeptons")
+				);
 
 	registerOutputCollection( 	LCIO::MCPARTICLE,
-								"outputTrueIsolatedLeptonCollection" ,
-								"Name of the output True Isolated Lepton collection"  ,
-								m_outputTrueIsolatedLeptonCollection ,
-								std::string("TrueIsoLeps")
-							);
+					"outputTrueIsolatedLeptonCollection" ,
+					"Name of the output True Isolated Lepton collection"  ,
+					m_outputTrueIsolatedLeptonCollection ,
+					std::string("TrueIsoLeps")
+				);
 
 	registerOutputCollection( 	LCIO::MCPARTICLE,
-								"outputTrueQuarkCollection" ,
-								"Name of the output True Quark collection"  ,
-								m_outputTrueQuarkCollection ,
-								std::string("TrueQuarks")
-							);
+					"outputTrueQuarkCollection" ,
+					"Name of the output True Quark collection"  ,
+					m_outputTrueQuarkCollection ,
+					std::string("TrueQuarks")
+				);
 
 	registerOutputCollection( 	LCIO::MCPARTICLE,
-								"outputTrueISRCollection" ,
-								"Name of the output True ISR photon collection"  ,
-								m_outputTrueISRCollection ,
-								std::string("TrueISRs")
-							);
+					"outputTrueISRCollection" ,
+					"Name of the output True ISR photon collection"  ,
+					m_outputTrueISRCollection ,
+					std::string("TrueISRs")
+				);
 
 	registerOutputCollection( 	LCIO::RECONSTRUCTEDPARTICLE,
-								"outputRecoISRCollection" ,
-								"Name of the output Reconstructed ISR photon collection"  ,
-								m_outputRecoISRCollection ,
-								std::string("RecoISRs")
-							);
+					"outputRecoISRCollection" ,
+					"Name of the output Reconstructed ISR photon collection"  ,
+					m_outputRecoISRCollection ,
+					std::string("RecoISRs")
+				);
 
 	registerOutputCollection( 	LCIO::RECONSTRUCTEDPARTICLE,
-								"outputPFOCollection" ,
-								"Name of the output PFO collection minus Isolated Leptons and ISR"  ,
-								m_outputPFOCollection ,
-								std::string("refinedPFOs")
-							);
+					"outputPFOCollection" ,
+					"Name of the output PFO collection minus Isolated Leptons and ISR"  ,
+					m_outputPFOCollection ,
+					std::string("refinedPFOs")
+				);
 
 	registerOutputCollection( 	LCIO::RECONSTRUCTEDPARTICLE,
-								"outputBackgroundCollection" ,
-								"Name of the Background collection (not from jets/ISR/IsolatedLeptons)"  ,
-								m_outputBackgroundCollection ,
-								std::string("Backgrounds")
-							);
+					"outputBackgroundCollection" ,
+					"Name of the Background collection (not from jets/ISR/IsolatedLeptons)"  ,
+					m_outputBackgroundCollection ,
+					std::string("Backgrounds")
+				);
 
 	registerProcessorParameter(	"cheatIsoLepton",
-								"Whether use MCTruth information to tag Isolated Leptons or not, true = use MCTruth information, false = do not use MCTruth information",
-								m_cheatIsoLepton,
-								bool(true)
-							);
+					"Whether use MCTruth information to tag Isolated Leptons or not, true = use MCTruth information, false = do not use MCTruth information",
+					m_cheatIsoLepton,
+					bool(true)
+				);
 
 	registerProcessorParameter(	"cheatIsoLeptonFSR",
-								"Whether associate FSR photons to Isolated Leptons using MCTruth information or not, true = associate using MCTruth information, false = do not associate",
-								m_cheatIsoLeptonFSR,
-								bool(true)
-							);
+					"Whether associate FSR photons to Isolated Leptons using MCTruth information or not, true = associate using MCTruth information, false = do not associate",
+					m_cheatIsoLeptonFSR,
+					bool(true)
+				);
 
 	registerProcessorParameter(	"cheatISR",
-								"Whether isolate ISR photons using MCTruth information or not, true = isolate ISR photons, false = do not isolate",
-								m_cheatISR,
-								bool(true)
-							);
+					"Whether isolate ISR photons using MCTruth information or not, true = isolate ISR photons, false = do not isolate",
+					m_cheatISR,
+					bool(true)
+				);
 
 	registerProcessorParameter(	"cheatOverlay",
-								"Whether reject PFOs from other sources to output PFO collection or not, true = reject background by cheating overlay, false = merge backgrounds to putput PFO collection",
-								m_cheatOverlay,
-								bool(true)
-							);
+					"Whether reject PFOs from other sources to output PFO collection or not, true = reject background by cheating overlay, false = merge backgrounds to putput PFO collection",
+					m_cheatOverlay,
+					bool(true)
+				);
 
 
 	// Inputs: True jets (as a recoparticle, will be the sum of the _reconstructed particles_
@@ -217,6 +224,9 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 	IMPL::LCCollectionVec* outputPfoCollection(NULL);
 	outputPfoCollection = new IMPL::LCCollectionVec( LCIO::RECONSTRUCTEDPARTICLE );
 	outputPfoCollection->setSubset( true );
+	IMPL::LCCollectionVec* outputJetCollection(NULL);
+	outputJetCollection = new IMPL::LCCollectionVec( LCIO::RECONSTRUCTEDPARTICLE );
+	outputJetCollection->setSubset( true );
 	IMPL::LCCollectionVec* outputIsoLepCollection(NULL);
 	outputIsoLepCollection = new IMPL::LCCollectionVec( LCIO::RECONSTRUCTEDPARTICLE );
 	outputIsoLepCollection->setSubset( true );
@@ -257,11 +267,23 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 		pfoVector ISRPhotons{};
 		pfoVector refinedPFOs{};
 		pfoVector backgrounds{};
+		pfoVectorVector Jets{};
+		pfoVector JetsParticles{};
+		newPfoVector PerfectJets{};
+		std::vector<int> JetsType{};
+		pfoVector goodPFOs{};
+		pfoVectorVector ParticlesLists{};
+		newPfoVectorVector NewParticlesLists{};
 		LCRelationNavigator RecoMCParticleNav( pLCEvent->getCollection( _recoMCTruthLink ) );
 		LCRelationNavigator MCParticleRecoNav( pLCEvent->getCollection( _MCTruthRecoLink ) );
 		streamlog_out(DEBUG6) << "	Reading collection " << m_inputPFOCollection << std::endl;
 		pfoCollection		= pLCEvent->getCollection( m_inputPFOCollection );
 		int nPFOs = pfoCollection->getNumberOfElements();
+		for ( int i_pfo = 0 ; i_pfo < nPFOs ; ++i_pfo )
+		{
+			ReconstructedParticle *pfo = dynamic_cast<ReconstructedParticle*>( pfoCollection->getElementAt( i_pfo ) );
+			goodPFOs.push_back( pfo );
+		}
 		streamlog_out(DEBUG6) << "	Collection " << m_inputPFOCollection << " was red with " << nPFOs << " elements" << std::endl;
 		int nIsoLeps = 0;
 		if( !m_cheatIsoLepton )
@@ -310,6 +332,7 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 			streamlog_out(DEBUG4) << "		seenJet (Px,Py,Pz,E):		" << pseen( i_trueJet )[ 0 ] << " , " << pseen( i_trueJet )[ 1 ] << " , " << pseen( i_trueJet )[ 2 ] << " , " << Eseen( i_trueJet ) << std::endl;
 			if ( trueJetType == 1 || trueJetType == 3 )
 			{
+				JetsParticles.clear();
 				bool quarkExist = false;
 				for ( unsigned int i = 0 ; i < trueQuarks.size() ; ++i )
 				{
@@ -321,40 +344,21 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 					streamlog_out(DEBUG1) << "A MCParticle is found to be added to " << m_outputTrueQuarkCollection << " Collection" << std::endl;
 					streamlog_out(DEBUG1) << *( initial_elementon( i_trueJet ) ) << std::endl;
 				}
+				JetsType.push_back( initial_elementon( i_trueJet )->getPDG() );
 				for ( unsigned int i_par = 0; i_par < seen_partics( i_trueJet ).size() ; ++i_par )
 				{
-					bool particleWasInList = false;
-					for ( unsigned int i = 0 ; i < backgrounds.size() ; ++i )
-					{
-						if ( backgrounds[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < ISRPhotons.size() ; ++i )
-					{
-						if ( ISRPhotons[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < IsoLepsFSRs.size() ; ++i )
-					{
-						if ( IsoLepsFSRs[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < IsoLeps.size() ; ++i )
-					{
-						if ( IsoLeps[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < refinedPFOs.size() ; ++i )
-					{
-						if ( refinedPFOs[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					bool goodPFOCandidate = false;
-					for ( int i_pfo = 0 ; i_pfo < nPFOs ; ++i_pfo )
-					{
-						ReconstructedParticle *pfo = dynamic_cast<ReconstructedParticle*>( pfoCollection->getElementAt( i_pfo ) );
-						if ( seen_partics( i_trueJet )[ i_par ] == pfo ) goodPFOCandidate = true;
-					}
+					ParticlesLists.clear(); NewParticlesLists.clear();
+					ParticlesLists.push_back( backgrounds ); ParticlesLists.push_back( ISRPhotons ); ParticlesLists.push_back( IsoLepsFSRs ); ParticlesLists.push_back( refinedPFOs ); NewParticlesLists.push_back( IsoLeps );
+					bool particleWasInList = checkParticleInLists( seen_partics( i_trueJet )[ i_par ] , ParticlesLists , NewParticlesLists );
+					ParticlesLists.clear();NewParticlesLists.clear();
+					ParticlesLists.push_back( goodPFOs );
+					bool goodPFOCandidate = checkParticleInLists( seen_partics( i_trueJet )[ i_par ] , ParticlesLists , NewParticlesLists );
 					if ( !particleWasInList && goodPFOCandidate )
 					{
 						refinedPFOs.push_back( seen_partics( i_trueJet )[ i_par ] );
 						streamlog_out(DEBUG1) << "A Reconstructed Particle is added to " << m_outputPFOCollection << " Collection" << std::endl;
 						streamlog_out(DEBUG1) << *( seen_partics( i_trueJet )[ i_par ] ) << std::endl;
+						JetsParticles.push_back( seen_partics( i_trueJet )[ i_par ] );
 					}
 				}
 				for ( unsigned int i_daughter = 0 ; i_daughter < initial_elementon( i_trueJet )->getDaughters().size() ; ++i_daughter )
@@ -379,11 +383,9 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 								streamlog_out(DEBUG0) << "Looking for reconstructed particle linked to daughter of true FSR photon:" << std::endl;
 								streamlog_out(DEBUG0) << *( daughter->getDaughters()[ i_daughtersOfDaughters ] ) << std::endl;
 								recoDaughter = getLinkedPFO( daughter->getDaughters()[ i_daughtersOfDaughters ] , RecoMCParticleNav , MCParticleRecoNav , false , false , weightPFOtoMCP , weightMCPtoPFO );
-								bool linkedRecoParExist = false;
-								for ( unsigned int i_recoPar = 0 ; i_recoPar < recoFSRPhotons.size() ; ++i_recoPar )
-								{
-									if ( recoFSRPhotons[ i_recoPar ] == recoDaughter ) linkedRecoParExist = true;
-								}
+								ParticlesLists.clear(); NewParticlesLists.clear();
+								ParticlesLists.push_back( recoFSRPhotons );
+								bool linkedRecoParExist = checkParticleInLists( recoDaughter , ParticlesLists , NewParticlesLists );
 								if ( recoDaughter != NULL && !linkedRecoParExist )
 								{
 									streamlog_out(DEBUG1) << "Linked reconstructed particle to daughter of true FSR photon:" << std::endl;
@@ -392,44 +394,25 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 								}
 							}
 						}
-						for ( unsigned int i_d = 0 ; i_d < recoFSRPhotons.size() ; ++i_d )
+					}
+					for ( unsigned int i_d = 0 ; i_d < recoFSRPhotons.size() ; ++i_d )
+					{
+						ParticlesLists.clear(); NewParticlesLists.clear();
+						ParticlesLists.push_back( backgrounds ); ParticlesLists.push_back( ISRPhotons ); ParticlesLists.push_back( IsoLepsFSRs ); ParticlesLists.push_back( refinedPFOs ); NewParticlesLists.push_back( IsoLeps );
+						bool particleWasInList = checkParticleInLists( recoFSRPhotons[ i_d ] , ParticlesLists , NewParticlesLists );
+						ParticlesLists.clear();NewParticlesLists.clear();
+						ParticlesLists.push_back( goodPFOs );
+						bool goodPFOCandidate = checkParticleInLists( recoFSRPhotons[ i_d ] , ParticlesLists , NewParticlesLists );
+						if( !particleWasInList && goodPFOCandidate )
 						{
-							bool linkedRecoParExist = false;
-							for ( unsigned int i = 0 ; i < backgrounds.size() ; ++i )
-							{
-								if ( backgrounds[ i ] == recoFSRPhotons[ i_d ] ) linkedRecoParExist = true;
-							}
-							for ( unsigned int i = 0 ; i < ISRPhotons.size() ; ++i )
-							{
-								if ( ISRPhotons[ i ] == recoFSRPhotons[ i_d ] ) linkedRecoParExist = true;
-							}
-							for ( unsigned int i = 0 ; i < IsoLepsFSRs.size() ; ++i )
-							{
-								if ( IsoLepsFSRs[ i ] == recoFSRPhotons[ i_d ] ) linkedRecoParExist = true;
-							}
-							for ( unsigned int i = 0 ; i < IsoLeps.size() ; ++i )
-							{
-								if ( IsoLeps[ i ] == recoFSRPhotons[ i_d ] ) linkedRecoParExist = true;
-							}
-							for ( unsigned int i = 0 ; i < refinedPFOs.size() ; ++i )
-							{
-								if ( refinedPFOs[ i ] == recoFSRPhotons[ i_d ] ) linkedRecoParExist = true;
-							}
-							bool goodPFOCandidate = false;
-							for ( int i_pfo = 0 ; i_pfo < nPFOs ; ++i_pfo )
-							{
-								ReconstructedParticle *pfo = dynamic_cast<ReconstructedParticle*>( pfoCollection->getElementAt( i_pfo ) );
-								if ( recoFSRPhotons[ i_d ] == pfo ) goodPFOCandidate = true;
-							}
-							if( !linkedRecoParExist && goodPFOCandidate )
-							{
-								refinedPFOs.push_back( recoFSRPhotons[ i_d ] );
-								streamlog_out(DEBUG1) << "A FSR photon is added to " << m_outputPFOCollection << " Collection" << std::endl;
-								streamlog_out(DEBUG1) << *recoFSRPhotons[ i_d ] << std::endl;
-							}
+							refinedPFOs.push_back( recoFSRPhotons[ i_d ] );
+							streamlog_out(DEBUG1) << "A FSR photon is added to " << m_outputPFOCollection << " Collection" << std::endl;
+							streamlog_out(DEBUG1) << *recoFSRPhotons[ i_d ] << std::endl;
+							JetsParticles.push_back( recoFSRPhotons[ i_d ] );
 						}
 					}
 				}
+				Jets.push_back( JetsParticles );
 			}
 			else if ( trueJetType == 2 )
 			{
@@ -451,12 +434,13 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 					{
 						if ( m_cheatIsoLepton )
 						{
-							bool particleWasInList = false;
-							for ( unsigned int i = 0 ; i < IsoLeps.size() ; ++i )
-							{
-								if ( IsoLeps[ i ] == seenIsoLep ) particleWasInList = true;
-							}
-							if ( !particleWasInList )
+							ParticlesLists.clear(); NewParticlesLists.clear();
+							ParticlesLists.push_back( backgrounds ); ParticlesLists.push_back( ISRPhotons ); ParticlesLists.push_back( IsoLepsFSRs ); ParticlesLists.push_back( refinedPFOs ); NewParticlesLists.push_back( IsoLeps );
+							bool particleWasInList = checkParticleInLists( seenIsoLep , ParticlesLists , NewParticlesLists );
+							ParticlesLists.clear();NewParticlesLists.clear();
+							ParticlesLists.push_back( goodPFOs );
+							bool goodPFOCandidate = checkParticleInLists( seenIsoLep , ParticlesLists , NewParticlesLists );
+							if ( !particleWasInList && goodPFOCandidate )
 							{
 								IsoLeps.push_back( seenIsoLep );
 								streamlog_out(DEBUG1) << "A Charged lepton is found to be added to " << m_outputIsolatedLeptonCollection << " Collection" << std::endl;
@@ -466,33 +450,12 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 					}
 					else
 					{
-						bool particleWasInList = false;
-						for ( unsigned int i = 0 ; i < backgrounds.size() ; ++i )
-						{
-							if ( backgrounds[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-						}
-						for ( unsigned int i = 0 ; i < ISRPhotons.size() ; ++i )
-						{
-							if ( ISRPhotons[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-						}
-						for ( unsigned int i = 0 ; i < IsoLepsFSRs.size() ; ++i )
-						{
-							if ( IsoLepsFSRs[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-						}
-						for ( unsigned int i = 0 ; i < IsoLeps.size() ; ++i )
-						{
-							if ( IsoLeps[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-						}
-						for ( unsigned int i = 0 ; i < refinedPFOs.size() ; ++i )
-						{
-							if ( refinedPFOs[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-						}
-						bool goodPFOCandidate = false;
-						for ( int i_pfo = 0 ; i_pfo < nPFOs ; ++i_pfo )
-						{
-							ReconstructedParticle *pfo = dynamic_cast<ReconstructedParticle*>( pfoCollection->getElementAt( i_pfo ) );
-							if ( seen_partics( i_trueJet )[ i_par ] == pfo ) goodPFOCandidate = true;
-						}
+						ParticlesLists.clear(); NewParticlesLists.clear();
+						ParticlesLists.push_back( backgrounds ); ParticlesLists.push_back( ISRPhotons ); ParticlesLists.push_back( IsoLepsFSRs ); ParticlesLists.push_back( refinedPFOs ); NewParticlesLists.push_back( IsoLeps );
+						bool particleWasInList = checkParticleInLists( seenIsoLep , ParticlesLists , NewParticlesLists );
+						ParticlesLists.clear();NewParticlesLists.clear();
+						ParticlesLists.push_back( goodPFOs );
+						bool goodPFOCandidate = checkParticleInLists( seenIsoLep , ParticlesLists , NewParticlesLists );
 						if ( !particleWasInList && goodPFOCandidate )
 						{
 							IsoLepsFSRs.push_back( seenIsoLep );
@@ -512,33 +475,12 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 				}
 				for ( unsigned int i_par = 0; i_par < seen_partics( i_trueJet ).size() ; ++i_par )
 				{
-					bool particleWasInList = false;
-					for ( unsigned int i = 0 ; i < ISRPhotons.size() ; ++i )
-					{
-						if ( ISRPhotons[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < IsoLepsFSRs.size() ; ++i )
-					{
-						if ( IsoLepsFSRs[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < IsoLeps.size() ; ++i )
-					{
-						if ( IsoLeps[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < refinedPFOs.size() ; ++i )
-					{
-						if ( refinedPFOs[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < backgrounds.size() ; ++i )
-					{
-						if ( backgrounds[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					bool goodPFOCandidate = false;
-					for ( int i_pfo = 0 ; i_pfo < nPFOs ; ++i_pfo )
-					{
-						ReconstructedParticle *pfo = dynamic_cast<ReconstructedParticle*>( pfoCollection->getElementAt( i_pfo ) );
-						if ( seen_partics( i_trueJet )[ i_par ] == pfo ) goodPFOCandidate = true;
-					}
+					ParticlesLists.clear(); NewParticlesLists.clear();
+					ParticlesLists.push_back( backgrounds ); ParticlesLists.push_back( ISRPhotons ); ParticlesLists.push_back( IsoLepsFSRs ); ParticlesLists.push_back( refinedPFOs ); NewParticlesLists.push_back( IsoLeps );
+					bool particleWasInList = checkParticleInLists( seen_partics( i_trueJet )[ i_par ] , ParticlesLists , NewParticlesLists );
+					ParticlesLists.clear();NewParticlesLists.clear();
+					ParticlesLists.push_back( goodPFOs );
+					bool goodPFOCandidate = checkParticleInLists( seen_partics( i_trueJet )[ i_par ] , ParticlesLists , NewParticlesLists );
 					if ( !particleWasInList && goodPFOCandidate )
 					{
 						ISRPhotons.push_back( seen_partics( i_trueJet )[ i_par ] );
@@ -551,33 +493,12 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 			{
 				for ( unsigned int i_par = 0; i_par < seen_partics( i_trueJet ).size() ; ++i_par )
 				{
-					bool particleWasInList = false;
-					for ( unsigned int i = 0 ; i < backgrounds.size() ; ++i )
-					{
-						if ( backgrounds[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < ISRPhotons.size() ; ++i )
-					{
-						if ( ISRPhotons[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < IsoLepsFSRs.size() ; ++i )
-					{
-						if ( IsoLepsFSRs[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < IsoLeps.size() ; ++i )
-					{
-						if ( IsoLeps[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					for ( unsigned int i = 0 ; i < refinedPFOs.size() ; ++i )
-					{
-						if ( refinedPFOs[ i ] == seen_partics( i_trueJet )[ i_par ] ) particleWasInList = true;
-					}
-					bool goodPFOCandidate = false;
-					for ( int i_pfo = 0 ; i_pfo < nPFOs ; ++i_pfo )
-					{
-						ReconstructedParticle *pfo = dynamic_cast<ReconstructedParticle*>( pfoCollection->getElementAt( i_pfo ) );
-						if ( seen_partics( i_trueJet )[ i_par ] == pfo ) goodPFOCandidate = true;
-					}
+					ParticlesLists.clear(); NewParticlesLists.clear();
+					ParticlesLists.push_back( backgrounds ); ParticlesLists.push_back( ISRPhotons ); ParticlesLists.push_back( IsoLepsFSRs ); ParticlesLists.push_back( refinedPFOs ); NewParticlesLists.push_back( IsoLeps );
+					bool particleWasInList = checkParticleInLists( seen_partics( i_trueJet )[ i_par ] , ParticlesLists , NewParticlesLists );
+					ParticlesLists.clear();NewParticlesLists.clear();
+					ParticlesLists.push_back( goodPFOs );
+					bool goodPFOCandidate = checkParticleInLists( seen_partics( i_trueJet )[ i_par ] , ParticlesLists , NewParticlesLists );
 					if ( !particleWasInList && goodPFOCandidate )
 					{
 						backgrounds.push_back( seen_partics( i_trueJet )[ i_par ] );
@@ -590,28 +511,40 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 		for ( int i_pfo = 0 ; i_pfo < nPFOs ; ++i_pfo )
 		{
 			ReconstructedParticle *pfo = dynamic_cast<ReconstructedParticle*>( pfoCollection->getElementAt( i_pfo ) );
-			bool pfoExist = false;
-			for ( unsigned int i_par = 0 ; i_par < refinedPFOs.size() ; ++i_par )
-			{
-				if ( refinedPFOs[ i_par ] == pfo ) pfoExist = true;
-			}
-			for ( unsigned int i_par = 0 ; i_par < IsoLeps.size() ; ++i_par )
-			{
-				if ( IsoLeps[ i_par ] == pfo ) pfoExist = true;
-			}
-			for ( unsigned int i_par = 0 ; i_par < IsoLepsFSRs.size() ; ++i_par )
-			{
-				if ( IsoLepsFSRs[ i_par ] == pfo ) pfoExist = true;
-			}
-			for ( unsigned int i_par = 0 ; i_par < ISRPhotons.size() ; ++i_par )
-			{
-				if ( ISRPhotons[ i_par ] == pfo ) pfoExist = true;
-			}
+			ParticlesLists.clear(); NewParticlesLists.clear();
+			ParticlesLists.push_back( backgrounds ); ParticlesLists.push_back( ISRPhotons ); ParticlesLists.push_back( IsoLepsFSRs ); ParticlesLists.push_back( refinedPFOs ); NewParticlesLists.push_back( IsoLeps );
+			bool pfoExist = checkParticleInLists( pfo , ParticlesLists , NewParticlesLists );;
 			if ( !pfoExist )
 			{
 				backgrounds.push_back( pfo );
 				if ( !m_cheatOverlay ) refinedPFOs.push_back( pfo );
 			}
+		}
+		for ( unsigned int i_jet = 0 ; i_jet < Jets.size() ; ++i_jet )
+		{
+			streamlog_out(DEBUG4) << "	Forming TrueJet [ " << i_jet << " ] with " << Jets[ i_jet ].size() << " particles" << std::endl;
+			ReconstructedParticleImpl* jet = new ReconstructedParticleImpl;
+			TLorentzVector jetFourMomentum( 0.0 , 0.0 , 0.0 , 0.0 );
+			std::vector<float> jetCovMat( 10, 0.0 );
+			for ( unsigned int i_par = 0 ; i_par < Jets[ i_jet ].size() ; ++i_par )
+			{
+				streamlog_out(DEBUG4) << "	Adding particle [ " << i_par << " ] to TrueJet[ " << i_jet << " ]:" << std::endl;
+				streamlog_out(DEBUG4) << *( Jets[ i_jet ][ i_par ] ) << std::endl;
+				jetFourMomentum += TLorentzVector( Jets[ i_jet ][ i_par ]->getMomentum()[ 0 ] , Jets[ i_jet ][ i_par ]->getMomentum()[ 1 ] , Jets[ i_jet ][ i_par ]->getMomentum()[ 2 ] , Jets[ i_jet ][ i_par ]->getEnergy() );
+				for ( int i_Element = 0 ; i_Element < 10 ; ++i_Element ) jetCovMat[ i_Element ] += Jets[ i_jet ][ i_par ]->getCovMatrix()[ i_Element ];
+				jet->addParticle( Jets[ i_jet ][ i_par ] );
+				streamlog_out(DEBUG4) << "	Particle [ " << i_par << " ] added to TrueJet[ " << i_jet << " ]:" << std::endl;
+			}
+			double jetMomentum[ 3 ]{ jetFourMomentum.Px() , jetFourMomentum.Py() , jetFourMomentum.Pz() };
+			double jetEnergy = jetFourMomentum.E();
+			jet->setMomentum( jetMomentum );
+			jet->setEnergy( jetEnergy );
+			jet->setCovMatrix( jetCovMat );
+			jet->setMass( jetFourMomentum.M() );
+			if ( JetsType.size() == Jets.size() ) jet->setType( JetsType[ i_jet ] );
+			streamlog_out(DEBUG4) << "	TrueJet [ " << i_jet << " ] with " << jet->getParticles().size() << " particles is formed" << std::endl;
+			streamlog_out(DEBUG4) << *( jet ) << std::endl;
+			PerfectJets.push_back( jet );
 		}
 		for ( unsigned int i_fsr = 0 ; i_fsr < IsoLepsFSRs.size() ; ++i_fsr )
 		{
@@ -684,6 +617,7 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 		//}
 		streamlog_out(DEBUG7) << "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
 		streamlog_out(DEBUG7) << "		" << trueISRPhotons.size() << " True ISR Photons are Found" << std::endl;
+		streamlog_out(DEBUG7) << "		" << PerfectJets.size() << " Perfect Jets are Found" << std::endl;
 		streamlog_out(DEBUG7) << "		" << trueIsoLeptons.size() << " True Isolated Leptons are Found" << std::endl;
 		streamlog_out(DEBUG7) << "		" << trueQuarks.size() << " True Quarks are Found" << std::endl;
 		streamlog_out(DEBUG7) << "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
@@ -693,6 +627,10 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 		streamlog_out(DEBUG7) << "		" << ISRPhotons.size() << " PFOs as ISR Photons (" << ( m_cheatISR ? "Isolated" : "merged to RefinedPFOs" ) << ")" << std::endl;
 		streamlog_out(DEBUG7) << "		" << backgrounds.size() << " PFOs as Backgrounds (" << ( m_cheatOverlay ? "Rejected" : "merged to RefinedPFOs" ) << ")" << std::endl;
 		streamlog_out(DEBUG7) << "		" << refinedPFOs.size() << " PFOs as Remaining PFOs to be clustered in to recoJets" << std::endl;
+		for ( unsigned int i_par = 0 ; i_par < PerfectJets.size() ; ++i_par )
+		{
+			outputJetCollection->addElement( PerfectJets[ i_par ] );
+		}
 		for ( unsigned int i_par = 0 ; i_par < IsoLeps.size() ; ++i_par )
 		{
 			outputIsoLepCollection->addElement( IsoLeps[ i_par ] );
@@ -712,31 +650,24 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 
 		for ( unsigned int i_par = 0 ; i_par < ISRPhotons.size() ; ++i_par )
 		{
-			if ( m_cheatISR )
-			{
-				outputRecoISRCollection->addElement( ISRPhotons[ i_par ] );
-			}
-			else
-			{
-				outputPfoCollection->addElement( ISRPhotons[ i_par ] );
-			}
+			outputRecoISRCollection->addElement( ISRPhotons[ i_par ] );
 		}
 		for ( unsigned int i_par = 0 ; i_par < backgrounds.size() ; ++i_par )
 		{
-			if ( m_cheatOverlay )
-			{
-				outputBackgroundCollection->addElement( backgrounds[ i_par ] );
-			}
-			else
-			{
-				outputPfoCollection->addElement( backgrounds[ i_par ] );
-			}
+			outputBackgroundCollection->addElement( backgrounds[ i_par ] );
 		}
 		for ( unsigned int i_par = 0 ; i_par < refinedPFOs.size() ; ++i_par )
 		{
 			outputPfoCollection->addElement( refinedPFOs[ i_par ] );
 		}
 
+		streamlog_out(DEBUG8) << "	Output " << m_outputJetCollection << " Collection with " << outputJetCollection->getNumberOfElements() << " elements:" << std::endl;
+		for ( int i_pfo = 0 ; i_pfo < outputJetCollection->getNumberOfElements() ; ++i_pfo )
+		{
+			ReconstructedParticle *pfo = dynamic_cast<ReconstructedParticle*>( outputJetCollection->getElementAt( i_pfo ) );
+			streamlog_out(DEBUG6) << "		RecoParticle[ " << i_pfo << " ]:" << std::endl;
+			streamlog_out(DEBUG6) << *pfo << std::endl;
+		}
 		streamlog_out(DEBUG8) << "	Output " << m_outputIsolatedLeptonCollection << " Collection with " << outputIsoLepCollection->getNumberOfElements() << " elements:" << std::endl;
 		for ( int i_pfo = 0 ; i_pfo < outputIsoLepCollection->getNumberOfElements() ; ++i_pfo )
 		{
@@ -787,6 +718,7 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 			streamlog_out(DEBUG6) << *pfo << std::endl;
 		}
 
+		pLCEvent->addCollection( outputJetCollection , m_outputJetCollection );
 		pLCEvent->addCollection( outputIsoLepCollection , m_outputIsolatedLeptonCollection );
 		pLCEvent->addCollection( outputTrueIsolateLeptonCollection , m_outputTrueIsolatedLeptonCollection );
 		pLCEvent->addCollection( outputTrueQuarkCollection , m_outputTrueQuarkCollection );
@@ -915,8 +847,49 @@ EVENT::ReconstructedParticle* TrueJetIsoLepISRBG::getLinkedPFO( EVENT::MCParticl
 	}
 }
 
+bool TrueJetIsoLepISRBG::checkParticleInLists( EVENT::ReconstructedParticle* pfo , pfoVectorVector ParticleLists , newPfoVectorVector NewParticleLists )
+{
+	bool particleIsInList = false;
+	for ( unsigned int i_List = 0 ; i_List < ParticleLists.size() ; ++i_List )
+	{
+		for ( unsigned int i_Par = 0 ; i_Par < ParticleLists[ i_List ].size() ; ++i_Par )
+		{
+			if ( pfo == ParticleLists[ i_List ][ i_Par ] ) particleIsInList = true;
+		}
+	}
+	for ( unsigned int i_List = 0 ; i_List < NewParticleLists.size() ; ++i_List )
+	{
+		for ( unsigned int i_Par = 0 ; i_Par < NewParticleLists[ i_List ].size() ; ++i_Par )
+		{
+			if ( pfo == NewParticleLists[ i_List ][ i_Par ] ) particleIsInList = true;
+		}
+	}
+	return particleIsInList;
+}
+
+bool TrueJetIsoLepISRBG::checkParticleInLists( ReconstructedParticleImpl* pfo , pfoVectorVector ParticleLists , newPfoVectorVector NewParticleLists )
+{
+	bool particleIsInList = false;
+	for ( unsigned int i_List = 0 ; i_List < ParticleLists.size() ; ++i_List )
+	{
+		for ( unsigned int i_Par = 0 ; i_Par < ParticleLists[ i_List ].size() ; ++i_Par )
+		{
+			if ( pfo == ParticleLists[ i_List ][ i_Par ] ) particleIsInList = true;
+		}
+	}
+	for ( unsigned int i_List = 0 ; i_List < NewParticleLists.size() ; ++i_List )
+	{
+		for ( unsigned int i_Par = 0 ; i_Par < NewParticleLists[ i_List ].size() ; ++i_Par )
+		{
+			if ( pfo == NewParticleLists[ i_List ][ i_Par ] ) particleIsInList = true;
+		}
+	}
+	return particleIsInList;
+}
+
 void TrueJetIsoLepISRBG::check( LCEvent *pLCEvent )
 {
+	LCCollection *outputJetCollection{};
 	LCCollection *outputIsoLepCollection{};
 	LCCollection *outputTrueISRCollection{};
 	LCCollection *outputTrueIsolateLeptonCollection{};
@@ -926,6 +899,7 @@ void TrueJetIsoLepISRBG::check( LCEvent *pLCEvent )
 	LCCollection *outputPfoCollection{};
 	try
 	{
+		outputJetCollection = pLCEvent->getCollection( m_outputJetCollection );
 		outputIsoLepCollection = pLCEvent->getCollection( m_outputIsolatedLeptonCollection );
 		outputTrueIsolateLeptonCollection = pLCEvent->getCollection( m_outputTrueIsolatedLeptonCollection );
 		outputTrueISRCollection = pLCEvent->getCollection( m_outputTrueISRCollection );
@@ -933,6 +907,7 @@ void TrueJetIsoLepISRBG::check( LCEvent *pLCEvent )
 		outputRecoISRCollection = pLCEvent->getCollection( m_outputRecoISRCollection );
 		outputBackgroundCollection = pLCEvent->getCollection( m_outputBackgroundCollection );
 		outputPfoCollection = pLCEvent->getCollection( m_outputPFOCollection );
+		int n_outputJets = outputJetCollection->getNumberOfElements();
 		int n_outputIsoLeps = outputIsoLepCollection->getNumberOfElements();
 		int n_outputTrueIsoLeps = outputTrueIsolateLeptonCollection->getNumberOfElements();
 		int n_outputTrueISRs = outputTrueISRCollection->getNumberOfElements();
@@ -940,7 +915,7 @@ void TrueJetIsoLepISRBG::check( LCEvent *pLCEvent )
 		int n_outputRecoISRs = outputRecoISRCollection->getNumberOfElements();
 		int n_outputBGs = outputBackgroundCollection->getNumberOfElements();
 		int n_outputPFOs = outputPfoCollection->getNumberOfElements();
-		streamlog_out(DEBUG9) << "	CHECK : processed event: " << pLCEvent->getEventNumber() << " (Number of outputIsoLeps: True: " << n_outputTrueIsoLeps << " and Reco: " << n_outputIsoLeps << " , Number of outputISRs: True: " << n_outputTrueISRs << " and Reco: " << n_outputRecoISRs << " , Number of Quarks: " << n_outputTrueQuarks << " , Number of outputPFOs: " << n_outputPFOs << " , Number of outputBGs: " << n_outputBGs << ")" << std::endl;
+		streamlog_out(DEBUG9) << "	CHECK : processed event: " << pLCEvent->getEventNumber() << " (Number of outputJets: " << n_outputJets << " , Number of outputIsoLeps: True: " << n_outputTrueIsoLeps << " and Reco: " << n_outputIsoLeps << " , Number of outputISRs: True: " << n_outputTrueISRs << " and Reco: " << n_outputRecoISRs << " , Number of Quarks: " << n_outputTrueQuarks << " , Number of outputPFOs: " << n_outputPFOs << " , Number of outputBGs: " << n_outputBGs << ")" << std::endl;
 	}
 	catch(DataNotAvailableException &e)
         {
