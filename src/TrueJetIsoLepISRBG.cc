@@ -226,7 +226,7 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 	outputPfoCollection->setSubset( true );
 	IMPL::LCCollectionVec* outputJetCollection(NULL);
 	outputJetCollection = new IMPL::LCCollectionVec( LCIO::RECONSTRUCTEDPARTICLE );
-	outputJetCollection->setSubset( true );
+	//outputJetCollection->setSubset( true );
 	IMPL::LCCollectionVec* outputIsoLepCollection(NULL);
 	outputIsoLepCollection = new IMPL::LCCollectionVec( LCIO::RECONSTRUCTEDPARTICLE );
 	outputIsoLepCollection->setSubset( true );
@@ -260,6 +260,8 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 		newPfoVector IsoLeps{};
 		pfoVector IsoLepsFSRs{};
 		std::vector<unsigned int> IsoLepsWithFSRindex{};
+		std::vector<unsigned int> IsoLepsTrueJetindex{};
+		std::vector<unsigned int> IsoLepFSRsTrueJetindex{};
 		//newPfoVector IsoLeptons{};
 		mcpVector trueIsoLeptons{};
 		mcpVector trueQuarks{};
@@ -430,7 +432,7 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 				for ( unsigned int i_par = 0; i_par < seen_partics( i_trueJet ).size() ; ++i_par )
 				{
 					ReconstructedParticleImpl* seenIsoLep = dynamic_cast<ReconstructedParticleImpl*>( seen_partics( i_trueJet )[ i_par ] );
-					if ( seenIsoLep->getTracks().size() == 1 )
+					if ( fabs( seenIsoLep->getCharge() ) > 0.5 )
 					{
 						if ( m_cheatIsoLepton )
 						{
@@ -443,12 +445,13 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 							if ( !particleWasInList && goodPFOCandidate )
 							{
 								IsoLeps.push_back( seenIsoLep );
-								streamlog_out(DEBUG1) << "A Charged lepton is found to be added to " << m_outputIsolatedLeptonCollection << " Collection" << std::endl;
+								streamlog_out(DEBUG1) << "A Charged lepton in trueJet " << i_trueJet << " is found to be added to " << m_outputIsolatedLeptonCollection << " Collection" << std::endl;
 								streamlog_out(DEBUG1) << *seenIsoLep << std::endl;
+								IsoLepsTrueJetindex.push_back( i_trueJet );
 							}
 						}
 					}
-					else
+					else if ( seenIsoLep->getType() == 22 )
 					{
 						ParticlesLists.clear(); NewParticlesLists.clear();
 						ParticlesLists.push_back( backgrounds ); ParticlesLists.push_back( ISRPhotons ); ParticlesLists.push_back( IsoLepsFSRs ); ParticlesLists.push_back( refinedPFOs ); NewParticlesLists.push_back( IsoLeps );
@@ -459,8 +462,9 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 						if ( !particleWasInList && goodPFOCandidate )
 						{
 							IsoLepsFSRs.push_back( seenIsoLep );
-							streamlog_out(DEBUG1) << "A FSR photon is found to be added to " << m_outputIsolatedLeptonCollection << " Collection" << std::endl;
+							streamlog_out(DEBUG1) << "A FSR photon in trueJet " << i_trueJet << " is found to be added to " << m_outputIsolatedLeptonCollection << " Collection" << std::endl;
 							streamlog_out(DEBUG1) << *seenIsoLep << std::endl;
+							IsoLepFSRsTrueJetindex.push_back( i_trueJet );
 						}
 					}
 				}
@@ -548,23 +552,38 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 		}
 		for ( unsigned int i_fsr = 0 ; i_fsr < IsoLepsFSRs.size() ; ++i_fsr )
 		{
-			TVector3 fsrDirection( IsoLepsFSRs[ i_fsr ]->getMomentum() ); fsrDirection.SetMag( 1.0 );
-			double cosMaxAngle = -1.0;
+			streamlog_out(DEBUG4) << "	Merging FSR [ " << i_fsr << " ] to an Isolated Lepton, FSR: " << std::endl;
+			streamlog_out(DEBUG4) << *( IsoLepsFSRs[ i_fsr ] ) << std::endl;
 			int i_matchedLep = -1;
-			for ( unsigned int i_lep = 0 ; i_lep < IsoLeps.size() ; ++i_lep )
+			if ( m_cheatIsoLepton )
 			{
-				TVector3 lepDirection( IsoLeps[ i_lep ]->getMomentum() ); lepDirection.SetMag( 1.0 );
-				if ( lepDirection.Dot( fsrDirection ) > cosMaxAngle )
+				for ( unsigned int i_lep = 0 ; i_lep < IsoLeps.size() ; ++i_lep )
 				{
-					cosMaxAngle = lepDirection.Dot( fsrDirection );
-					i_matchedLep = i_lep;
+					if ( IsoLepFSRsTrueJetindex[ i_fsr ] == IsoLepsTrueJetindex[ i_lep ] ) i_matchedLep = i_lep;
+				}
+			}
+			else
+			{
+				TVector3 fsrDirection( IsoLepsFSRs[ i_fsr ]->getMomentum()[ 0 ] , IsoLepsFSRs[ i_fsr ]->getMomentum()[ 1 ] , IsoLepsFSRs[ i_fsr ]->getMomentum()[ 2 ] ); fsrDirection.SetMag( 1.0 );
+				float directionMax = -1.0;
+				for ( unsigned int i_lep = 0 ; i_lep < IsoLeps.size() ; ++i_lep )
+				{
+					TVector3 lepDirection( IsoLeps[ i_lep ]->getMomentum()[ 0 ] , IsoLeps[ i_lep ]->getMomentum()[ 1 ] , IsoLeps[ i_lep ]->getMomentum()[ 2 ] ); lepDirection.SetMag( 1.0 );
+					if ( fsrDirection.Dot( lepDirection ) > directionMax )
+					{
+						directionMax = fsrDirection.Dot( lepDirection );
+						i_matchedLep = i_lep;
+					}
 				}
 			}
 			if ( i_matchedLep != -1 && m_cheatIsoLeptonFSR )
 			{
+				streamlog_out(DEBUG4) << "	Merging FSR [ " << i_fsr << " ] to Isolated Lepton [ " << i_matchedLep << " ], Isolated Lepton: " << std::endl;
+				streamlog_out(DEBUG4) << *( IsoLeps[ i_matchedLep ] ) << std::endl;
 				IsoLepsWithFSRindex.push_back( i_matchedLep );
 				double newMomentum[ 3 ]{ IsoLeps[ i_matchedLep ]->getMomentum()[ 0 ] + IsoLepsFSRs[ i_fsr ]->getMomentum()[ 0 ] , IsoLeps[ i_matchedLep ]->getMomentum()[ 1 ] + IsoLepsFSRs[ i_fsr ]->getMomentum()[ 1 ] , IsoLeps[ i_matchedLep ]->getMomentum()[ 2 ] + IsoLepsFSRs[ i_fsr ]->getMomentum()[ 2 ] };
 				double newEnergy = IsoLeps[ i_matchedLep ]->getEnergy() + IsoLepsFSRs[ i_fsr ]->getEnergy();
+				double newMass = sqrt( pow( newEnergy , 2 ) - pow( newMomentum[ 0 ] , 2 ) - pow( newMomentum[ 1 ] , 2 ) - pow( newMomentum[ 2 ] , 2 ) );
 				std::vector<float> newCovMat( 10, 0.0 );
 				for ( int i_element = 0 ; i_element < 10 ; ++i_element )
 				{
@@ -572,6 +591,7 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 				}
 				IsoLeps[ i_matchedLep ]->setMomentum( newMomentum );
 				IsoLeps[ i_matchedLep ]->setEnergy( newEnergy );
+				IsoLeps[ i_matchedLep ]->setMass( newMass );
 				IsoLeps[ i_matchedLep ]->setCovMatrix( newCovMat );
 				IsoLeps[ i_matchedLep ]->addParticle( IsoLepsFSRs[ i_fsr ] );
 				for ( unsigned int j = 0 ; j < IsoLepsFSRs[ i_fsr ]->getClusters().size() ; ++j )
@@ -582,6 +602,8 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 				{
 					IsoLeps[ i_matchedLep ]->addTrack( IsoLepsFSRs[ i_fsr ]->getTracks()[ j ] );
 				}
+				streamlog_out(DEBUG4) << "	FSR [ " << i_fsr << " ] successfully merged to Isolated Lepton [ " << i_matchedLep << " ], updated Isolated Lepton: " << std::endl;
+				streamlog_out(DEBUG4) << *( IsoLeps[ i_matchedLep ] ) << std::endl;
 				//IsoLeptons.push_back( IsoLeps[ i_matchedLep ] );
 			}
 			if ( !m_cheatIsoLeptonFSR )
@@ -623,7 +645,7 @@ void TrueJetIsoLepISRBG::processEvent( LCEvent* pLCEvent)
 		streamlog_out(DEBUG7) << "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" << std::endl;
 		streamlog_out(DEBUG7) << "	" << nPFOs << " PFOs were investigated" << std::endl;
 		streamlog_out(DEBUG7) << "		" << IsoLeps.size() << " PFOs as Isolated Leptons (" << ( m_cheatIsoLeptonFSR ? "with" : "without" ) << " FSR photons)" << std::endl;
-		streamlog_out(DEBUG7) << "		" << IsoLepsFSRs.size() << " PFOs as FSR of Isolated Leptons (merged to" << ( m_cheatIsoLeptonFSR ? "IsolatedLeptons" : "RefinedPFOs" ) << ")" << std::endl;
+		streamlog_out(DEBUG7) << "		" << IsoLepsFSRs.size() << " PFOs as FSR of Isolated Leptons (merged to " << ( m_cheatIsoLeptonFSR ? "IsolatedLeptons" : "RefinedPFOs" ) << ")" << std::endl;
 		streamlog_out(DEBUG7) << "		" << ISRPhotons.size() << " PFOs as ISR Photons (" << ( m_cheatISR ? "Isolated" : "merged to RefinedPFOs" ) << ")" << std::endl;
 		streamlog_out(DEBUG7) << "		" << backgrounds.size() << " PFOs as Backgrounds (" << ( m_cheatOverlay ? "Rejected" : "merged to RefinedPFOs" ) << ")" << std::endl;
 		streamlog_out(DEBUG7) << "		" << refinedPFOs.size() << " PFOs as Remaining PFOs to be clustered in to recoJets" << std::endl;
